@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hiker Dashboard | TrailVenture</title>
+    <link rel="stylesheet" href="hiker.css">
+</head>
+<body>
+
+<div class="dashboard-layout">
+
+    <aside class="sidebar">
+        <h1>TrailVenture</h1>
+
+        <nav style="display: flex; flex-direction: column; height: 80%;">
+            <a href="#" class="menu-item active">Profile</a>
+            <a href="package.html" class="menu-item">View Packages</a>
+            <a href="javascript:void(0)" onclick="logout()" class="logout">Logout</a>
+        </nav>
+    </aside>
+
+    <main class="content">
+        <h2 id="welcomeText">Welcome, Hiker!</h2>
+
+        <section class="profile">
+            <h3>Profile Information</h3>
+
+            <div class="details">
+                <p><strong>Name:</strong> <span id="displayFullName">Loading...</span></p>
+                <p><strong>Email:</strong> <span id="displayEmail">Loading...</span></p>
+                <p><strong>Phone:</strong> <span id="displayPhone">Loading...</span></p>
+                <p><strong>Role:</strong> <span id="displayRole">Hiker</span></p>
+            </div>
+
+            <div class="stats">
+                <div class="box">
+                    <h4>Total Hikes</h4>
+                    <p>0</p>
+                </div>
+
+                <div class="box">
+                    <h4>Total Distance</h4>
+                    <p>0 km</p>
+                </div>
+            </div>
+
+            <div class="booking">
+                <h4>My Bookings</h4>
+                <div id="bookingList">
+                    <p style="color: #888;">No recent bookings found.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+</div>
+
+<script>
+    function initDashboard() {
+        const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+        if (!loggedInUser) {
+            alert("Please login first!");
+            window.location.href = "index.html";
+            return;
+        }
+
+        const allUsers = JSON.parse(localStorage.getItem("users")) || [];
+        
+        const currentUser = allUsers.find(u => u.email === loggedInUser.email);
+
+        if (currentUser) {
+            document.getElementById("displayFullName").innerText = currentUser.name;
+            document.getElementById("displayEmail").innerText = currentUser.email;
+            document.getElementById("displayPhone").innerText = currentUser.phone || "Not provided";
+            document.getElementById("displayRole").innerText = currentUser.role;
+            
+            const firstName = currentUser.name.split(' ')[0];
+            document.getElementById("welcomeText").innerText = `Welcome, ${firstName}!`;
+        }
+    }
+
+    function logout() {
+        if (confirm("Are you sure you want to logout?")) {
+            localStorage.removeItem("loggedInUser");
+            window.location.href = "index.html";
+        }
+    }
+    window.onload = initDashboard;
+</script>
+
+</body>
+</html>

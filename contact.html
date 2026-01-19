@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - TrailVenture</title>
+    <link rel="stylesheet" href="contact.css">
+    <style>
+        .notification {
+            margin-top: 10px;
+            font-weight: bold;
+            color: green;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main">
+        <img src="pic/logo.png" class="logo" alt="TrailVenture Logo">
+        <div class="menu">
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="about.html">ABOUT</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+                <li><a href="package.html">PACKAGE</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="head">
+        <h1>Contact Us</h1>
+        <p>Have questions? We are here to help you plan your next adventure.</p>
+    </div>
+
+    <div class="container">
+        <div class="contact-layout">
+
+            <div class="mission-text">
+                <h2>Get in Touch</h2>
+                <form class="contact-form" id="contactForm">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+
+                    <select required>
+                        <option value="">Select Inquiry</option>
+                        <option>General Inquiry</option>
+                        <option>Technical Support</option>
+                        <option>Licensing Issue</option>
+                        <option>Partnership</option>
+                    </select>
+
+                    <textarea rows="5" placeholder="Your Message" required></textarea>
+
+                    <button type="submit" class="register">Send Message</button>
+                </form>
+                <div id="notification" class="notification">Successfully sent!</div>
+            </div>
+
+            <div class="mission-text info-box">
+                <h2>Contact Information</h2>
+                <p><strong>Email:</strong> support@trailventure.my</p>
+                <p><strong>Phone:</strong> +603-5555 8890</p>
+                <p><strong>Address:</strong> Damansara,<br>Kuala Lumpur</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2026 TrailVenture</p>
+    </div>
+
+    <script>
+        const contactForm = document.getElementById("contactForm");
+        const notification = document.getElementById("notification");
+
+        contactForm.addEventListener("submit", function(e) {
+            e.preventDefault(); 
+            
+            notification.style.display = "block";
+
+            setTimeout(() => {
+                notification.style.display = "none";
+            }, 3000);
+
+            contactForm.reset();
+        });
+    </script>
+
+</body>
+</html>

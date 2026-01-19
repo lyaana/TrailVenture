@@ -1,0 +1,184 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(to top, rgba(0,0,0,0.60) 50%, rgba(0,0,0,0.60)50%), url(pic/hike.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: antiquewhite;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.main {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 90px;
+    z-index: 100;
+    background: transparent;
+}
+
+.logo {
+    width: 230px;
+    padding: 10px 0 0 30px;
+    float: left;
+}
+
+.menu {
+    float: right;
+    margin-right: 40px;
+}
+
+.menu ul {
+    list-style: none;
+}
+
+.menu ul li {
+    display: inline-block;
+    line-height: 90px;
+    margin-left: 25px;
+    font-size: 20px;
+}
+
+.menu ul li a {
+    color: antiquewhite;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.menu ul li a:hover {
+    color: black;
+}
+
+.head {
+    text-align: center;
+    margin: 110px 0 50px;
+}
+
+.head h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.head p {
+    font-size: 16px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+.contact-layout {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.mission-text {
+    flex: 1;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 14px;
+    color: #222;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.mission-text h2 {
+    font-size: 32px;
+    margin-bottom: 15px;
+    color: #1b3022;
+}
+
+.mission-text p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #333;
+}
+
+.contact-form {
+    flex: 1;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 1.5px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    color: #333;
+    background: #fff;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+    color: #888;
+}
+
+.contact-form select option {
+    color: black;
+}
+
+.contact-form button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 20px;
+    background-color: #FB8C00;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.contact-form button:hover {
+    background-color: #ffa726;
+}
+
+
+.info-box p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.notification {
+    display: none;
+    margin-top: 15px;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.notification.success {
+    background-color: #38bdf8;
+    color: black;
+}
+
+.notification.error {
+    background-color: #f44336;
+    color: white;
+}
+
+.footer {
+    text-align: center;
+    margin: 50px 0 15px;
+    color: antiquewhite;
+}

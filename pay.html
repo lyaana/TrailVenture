@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment | TrailVenture</title>
+    <link rel="stylesheet" href="pay.css">
+</head>
+<body>
+
+    <header class="pay-header">
+        <h1>Confirm Payment</h1>
+        <p>Your next adventure is just one click away.</p>
+    </header>
+
+    <main class="payment-container">
+        <div class="payment-card">
+            <h2>Order Details</h2>
+            
+            <div class="info">
+                <p>Destination: <span id="mountName">-</span></p>
+                <p>Booking ID: <span id="bookingID">#TV-8821</span></p>
+                <p>Payment Type: <span>Online Banking (FPX)</span></p>
+            </div>
+
+            <div class="section">
+                <h3>Select Your Bank</h3>
+                <select id="bankSelect">
+                    <option value="">-- Select Bank --</option>
+                    <option value="Maybank2u">Maybank2u</option>
+                    <option value="CIMB Clicks">CIMB Clicks</option>
+                    <option value="RHB Now">RHB Now</option>
+                    <option value="Public Bank">Public Bank</option>
+                    <option value="Bank Islam">Bank Islam</option>
+                </select>
+            </div>
+
+            <div class="total">
+                <p>Total Payable Amount</p>
+                <h2 id="mountPrice">RM 0</h2>
+            </div>
+
+            <button class="pay-btn" id="payBtn">Pay with FPX</button>
+        </div>
+    </main>
+
+    <div class="success-popup" id="successPopup">
+        <div class="popup-box">
+            <div class="icon">✓</div>
+            <h2>Payment Successful!</h2>
+            <p>Your booking has been verified. You can now view your itinerary on the home page.</p>
+            <button class="pay-btn" onclick="goHome()">Back to Home</button>
+        </div>
+    </div>
+
+    <script>
+        // 1. Load data from LocalStorage
+        const pending = JSON.parse(localStorage.getItem("pendingBooking"));
+        const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+        // Redirect if someone tries to access this page without selecting a package
+        if (!pending || !loggedInUser) {
+            alert("No booking session found. Please try again.");
+            window.location.href = "package.html";
+        } else {
+            document.getElementById("mountName").innerText = pending.mountain;
+            document.getElementById("mountPrice").innerText = "RM " + pending.price;
+            // Generate a random booking ID for realism
+            document.getElementById("bookingID").innerText = "#TV-" + Math.floor(1000 + Math.random() * 9000);
+        }
+
+        // 2. Handle Payment Logic
+        document.getElementById("payBtn").addEventListener("click", function() {
+            const selectedBank = document.getElementById("bankSelect").value;
+
+            if (!selectedBank) {
+                alert("Please select a bank to proceed.");
+                return;
+            }
+
+            // Update user records in LocalStorage
+            let users = JSON.parse(localStorage.getItem("users")) || [];
+            const userIndex = users.findIndex(u => u.email.toLowerCase() === loggedInUser.email.toLowerCase());
+
+            if (userIndex !== -1) {
+                const bookingData = {
+                    mountain: pending.mountain,
+                    price: pending.price,
+                    bank: selectedBank,
+                    date: new Date().toLocaleDateString('en-GB'),
+                    status: "Confirmed"
+                };
+
+                // Add to user's booking history
+                if (!users[userIndex].bookings) users[userIndex].bookings = [];
+                users[userIndex].bookings.push(bookingData);
+
+                // Save back to local storage
+                localStorage.setItem("users", JSON.stringify(users));
+                
+                // Clear the temporary pending booking
+                localStorage.removeItem("pendingBooking");
+
+                // Show the success popup
+                document.getElementById("successPopup").style.display = "flex";
+            }
+        });
+
+        // 3. Final Redirect
+        function goHome() {
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

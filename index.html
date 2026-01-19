@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TrailVenture.my</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="main">
+
+    <img src="pic/logo.png" class="logo" alt="TrailVenture Logo">
+
+    <div class="menu">
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="about.html">ABOUT</a></li>
+            <li><a href="contact.html">CONTACT</a></li>
+            <li><a href="package.html">PACKAGE</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <h1>TrailVenture</h1>
+        <p class="summary">
+            From Trail to Summit - Conquer Peaks with the Best Guide<br>
+            Let every guided step bring you closer to nature's poetry,<br>
+            quiet forests, rising peaks, and stories beyond the horizon.
+        </p>
+        <button class="register">
+            <a href="registerpage.html">REGISTER NOW</a>
+        </button>
+    </div>
+
+    <div class="form">
+        <h2>Welcome Back</h2>
+
+        <input type="email" id="email" placeholder="Enter Your Email">
+        <input type="password" id="password" placeholder="Enter Your Password">
+
+        <select id="role">
+            <option value="">Select Role</option>
+            <option value="ADMIN">ADMIN</option>
+            <option value="HIKER">HIKER</option>
+            <option value="GUIDE">GUIDE</option>
+        </select>
+
+        <p id="error"></p>
+
+        <button class="button" onclick="login()">LOGIN</button>
+
+        <p class="link">
+            Don't have an account?<br>
+            <a href="registerpage.html">Sign up</a>
+        </p>
+
+        <p class="login">Log in with</p>
+        <div class="icon">
+            <a href="https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Faccounts.google.com%2F&dsh=S842196888%3A1768767099287178&followup=https%3A%2F%2Faccounts.google.com%2F&ifkv=AXbMIuDcAXLO7g2IY0aIp6chPPAUVClwcbC21aBHKwgWSrqdd-JfSJTJlzvWAD8SIJEGW18QTiJIkw&passive=1209600&flowName=GlifWebSignIn&flowEntry=ServiceLogin"><ion-icon name="logo-google"></ion-icon></a>
+            <a href="https://www.facebook.com/"><ion-icon name="logo-facebook"></ion-icon></a>
+            <a href="https://login.live.com/login.srf?wa=wsignin1.0&rpsnv=185&ct=1768767187&rver=7.5.2156.0&wp=MBI_SSL&wreply=https%3A%2F%2Flw.skype.com%2Flogin%2Foauth%2Fproxy%3Fclient_id%3D360605%26redirect_uri%3Dhttps%253A%252F%252Fsecure.skype.com%252Fportal%252Flogin%253Freturn_url%253Dhttps%25253A%25252F%25252Fsecure.skype.com%25252Fportal%25252Foverview%26response_type%3Dpostgrant%26state%3D2f1063dab0ce0fad3c39ecd1&lc=1033&id=293290&mkt=en-US&psi=skype&lw=1&cobrandid=2befc4b5-19e3-46e8-8347-77317a16a5a5&client_flight=ReservedFlight33%2CReservedFlight67"><ion-icon name="logo-skype"></ion-icon></a>
+            <a href="https://www.instagram.com/accounts/login/?hl=en"><ion-icon name="logo-instagram"></ion-icon></a>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+
+<script>
+if (!localStorage.getItem("users")) {
+    const users = [
+        {
+            email: "syafiq@gmail.com",
+            password: "12345",
+            role: "GUIDE",
+            dashboard: "dashboardguide.html"
+        },
+        {
+            email: "sarah@gmail.com",
+            password: "12345",
+            role: "HIKER",
+            dashboard: "dashboardhiker.html"
+        },
+        {
+            email: "admin@trailventure.com",
+            password: "admin123",
+            role: "ADMIN",
+            dashboard: "admin.html"
+        }
+    ];
+
+    localStorage.setItem("users", JSON.stringify(users));
+}
+
+function login() {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const role = document.getElementById("role").value;
+    const error = document.getElementById("error");
+
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+
+    const user = users.find(
+        u => u.email === email && u.password === password && u.role === role
+    );
+
+    if (user) {
+        const sessionData = {
+            email: user.email,
+            role: user.role,
+            dashboard: user.dashboard
+        };
+
+        localStorage.setItem("loggedInUser", JSON.stringify(sessionData));
+        window.location.href = user.dashboard;
+    } else {
+        error.innerText = "Failed Access";
+        error.style.color = "red";
+    }
+}
+
+function checkAuth(requiredRole) {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+    if (!user || user.role !== requiredRole) {
+        window.location.href = "login.html";
+    }
+}
+
+function logout() {
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "login.html";
+}
+</script>
+
+
+</body>
+</html>

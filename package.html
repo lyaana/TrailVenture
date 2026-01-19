@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hiking Packages | TrailVenture</title>
+    <link rel="stylesheet" href="package.css">
+</head>
+<body>
+
+<header class="top-header">
+    <div class="header-content">
+        <div class="header-text">
+            <h1>Hiking Packages</h1>
+            <p>Explore hiking packages offered by our licensed mountain guides.</p>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search by mountain, state, or park...">
+            <button type="button" id="searchBtn">Search</button>
+        </div>
+    </div>
+</header>
+
+<main class="package-container" id="packageGrid">
+
+    <div class="card" data-keywords="kinabalu sabah park summit borneo peaks">
+        <div class="card-image" style="background-image:url('pic/kinabalu.jpeg')"></div>
+        <div class="card-body">
+            <h2>Mt. Kinabalu Summit</h2>
+            <div class="content">
+                <p><strong>Location:</strong> Sabah</p>
+                <p><strong>Duration:</strong> 3 Days</p>
+                <p><strong>Description:</strong> Guided hike to the highest peak in Malaysia.</p>
+                <p class="price">RM750 <span>per person</span></p>
+                <p><strong>Guide:</strong> syafiq asyraff</p>
+            </div>
+            <button type="button" class="book-btn" onclick="handleBooking('Mt. Kinabalu Summit', 750)">
+                Book Now
+            </button>
+        </div>
+    </div>
+
+    <div class="card" data-keywords="stong kelantan expedition jelawang waterfall">
+        <div class="card-image" style="background-image:url('pic/stong.jpg')"></div>
+        <div class="card-body">
+            <h2>Gunung Stong Expedition</h2>
+            <div class="content">
+                <p><strong>Location:</strong> Kelantan</p>
+                <p><strong>Duration:</strong> 3 Days</p>
+                <p><strong>Description:</strong> Long-distance jungle trekking.</p>
+                <p class="price">RM230 <span>per person</span></p>
+                <p><strong>Guide:</strong> Amir Firdaus</p>
+            </div>
+            <button type="button" class="book-btn" onclick="handleBooking('Gunung Stong Expedition', 230)">
+                Book Now
+            </button>
+        </div>
+    </div>
+
+    <div class="card" data-keywords="cameron mossy forest perak pahang brinchang tea plantation">
+        <div class="card-image" style="background-image:url('pic/mossyforest.jpeg')"></div>
+        <div class="card-body">
+            <h2>Cameron Mossy Forest</h2>
+            <div class="content">
+                <p><strong>Location:</strong> Perak</p>
+                <p><strong>Duration:</strong> 2 Days</p>
+                <p><strong>Description:</strong> Easy hike suitable for beginners.</p>
+                <p class="price">RM150 <span>per person</span></p>
+                <p><strong>Guide:</strong> Encik Habibullah</p>
+            </div>
+            <button type="button" class="book-btn" onclick="handleBooking('Cameron Mossy Forest', 150)">
+                Book Now
+            </button>
+        </div>
+    </div>
+
+</main>
+
+<footer class="footer-nav">
+    <a href="index.html" class="back-link">Back to Home</a>
+</footer>
+
+<script>
+const userData = localStorage.getItem("loggedInUser");
+const user = userData ? JSON.parse(userData) : null;
+
+function handleBooking(packageName, packagePrice) {
+    // 1. Cek jika pengguna belum login
+    if (!user) {
+        alert("You need to register first!");
+        window.location.href = "registerpage.html"; 
+        return;
+    }
+
+    // 2. Halang Admin
+    if (user.role === "ADMIN") {
+        alert("Admin accounts cannot make bookings.");
+        return;
+    }
+
+    // 3. Simpan data pakej ke localStorage untuk dibaca oleh pay.html
+    const pendingBooking = {
+        mountain: packageName,
+        price: packagePrice
+    };
+    localStorage.setItem("pendingBooking", JSON.stringify(pendingBooking));
+
+    // 4. Pergi ke halaman bayar
+    window.location.href = "pay.html";
+}
+
+// Logik carian (dikekalkan)
+document.getElementById("searchBtn").addEventListener("click", function() {
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const cards = document.querySelectorAll(".card");
+    cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? "flex" : "none";
+    });
+});
+</script>
+
+</body>
+</html>

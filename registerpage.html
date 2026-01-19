@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - TrailVenture</title>
+    <link rel="stylesheet" href="registerpage.css">
+</head>
+
+<body>
+
+<div class="main">
+    <img src="pic/logo.png" class="logo" alt="Logo">
+    <div class="menu">
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="about.html">ABOUT</a></li>
+            <li><a href="contact.html">CONTACT</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="container">
+    <section class="head">
+        <h1>Create Account</h1>
+        <p>Join TrailVenture and start your adventure today.</p>
+    </section>
+
+    <section class="mission">
+        <div class="mission-text">
+            <h2>Register</h2>
+
+            <form id="regForm">
+                <input type="text" id="fullName" placeholder="Full Name" required>
+                <input type="email" id="email" placeholder="Email Address" required>
+                <input type="number" id="phone" placeholder="Phone Number" required>
+                <input type="password" id="password" placeholder="Password" required>
+
+                <select id="roleSelect" required>
+                    <option value="">Select Role</option>
+                    <option value="HIKER">HIKER</option>
+                    <option value="GUIDE">GUIDE</option>
+                </select>
+
+                <div id="guideSection" class="guide-extra">
+                    <h3>Verification (Guide Only)</h3>
+                    <input type="text" id="state" placeholder="Registered State">
+                    
+                    <label class="file-label">Guide Certificate
+                        <input type="file" id="cert">
+                    </label>
+                    
+                    <label class="file-label">IC (Front & Back)
+                        <input type="file" id="ic">
+                    </label>
+                    
+                    <label class="file-label">Selfie Photo with IC
+                        <input type="file" id="selfie">
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-register">REGISTER</button>
+
+                <p class="login-text">Already have an account? <a href="index.html">Login here</a></p>
+            </form>
+        </div>
+    </section>
+
+    <div class="footer">
+        <p>&copy; 2026 TrailVenture</p>
+    </div>
+</div>
+
+<div id="success" class="success-popup">
+    <div class="success-box" style="background: white; padding: 30px; border-radius: 10px; text-align: center; max-width: 400px;">
+        <h2 style="color: #27ae60;">Successful 🎉</h2>
+        <p>Your account has been created successfully. You can now login to your dashboard.</p>
+        <button onclick="window.location.href='index.html'" style="padding: 10px 20px; cursor: pointer; background: #27ae60; color: white; border: none; border-radius: 5px; margin-top: 15px; width: 100%;">Continue to Login</button>
+    </div>
+</div>
+
+<div id="failed" class="success-popup">
+    <div class="success-box" style="background: white; padding: 30px; border-radius: 10px; text-align: center; max-width: 400px;">
+        <h2 style="color: #e74c3c;">Registration Failed</h2>
+        <p id="failMsg">Please fill in all required fields correctly.</p>
+        <button onclick="closeFailed()" style="padding: 10px 20px; cursor: pointer; background: #e74c3c; color: white; border: none; border-radius: 5px; margin-top: 15px; width: 100%;">Try Again</button>
+    </div>
+</div>
+
+<script>
+    const roleSelect = document.getElementById('roleSelect');
+    const guideSection = document.getElementById('guideSection');
+    const regForm = document.getElementById('regForm');
+    const successPopup = document.getElementById('success');
+    const failedPopup = document.getElementById('failed');
+
+    // 1. KAWALAN PAPARAN BAHAGIAN GUIDE
+    roleSelect.addEventListener('change', function() {
+        if (this.value === 'GUIDE') {
+            guideSection.style.display = 'block';
+            guideSection.querySelectorAll('input').forEach(input => {
+                if(input.type !== 'file') input.required = true;
+            });
+        } else {
+            guideSection.style.display = 'none';
+            guideSection.querySelectorAll('input').forEach(input => input.required = false);
+        }
+    });
+
+    // 2. LOGIK PENDAFTARAN (SIMPAN KE LOCALSTORAGE)
+    regForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        if (regForm.checkValidity()) {
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const role = roleSelect.value;
+
+            // Ambil data users sedia ada atau cipta baru
+            let users = JSON.parse(localStorage.getItem("users")) || [];
+
+            // Semak jika email sudah ada dalam sistem
+            if (users.some(u => u.email === email)) {
+                document.getElementById('failMsg').innerText = "This email is already registered.";
+                failedPopup.style.display = 'flex';
+                return;
+            }
+
+            // Tetapkan Dashboard & Data Tambahan
+            let dashboardUrl = "dashboardhiker.html";
+            let license = null;
+
+            if (role === "GUIDE") {
+                dashboardUrl = "dashboardguide.html";
+                // Generate License ID rawak untuk demo
+                license = "TV-G-" + Math.floor(1000 + Math.random() * 9000);
+            }
+
+            // Objek User Baru
+            const newUser = {
+                name: fullName,
+                email: email,
+                phone: phone,
+                password: password,
+                role: role,
+                dashboard: dashboardUrl,
+                status: "Active",
+                regDate: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+                licenseId: license
+            };
+
+            // Simpan ke senarai dan update LocalStorage
+            users.push(newUser);
+            localStorage.setItem("users", JSON.stringify(users));
+
+            // Papar popup berjaya
+            successPopup.style.display = 'flex';
+        } else {
+            document.getElementById('failMsg').innerText = "Please fill in all required fields correctly.";
+            failedPopup.style.display = 'flex';
+        }
+    });
+
+    function closeFailed() {
+        failedPopup.style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
